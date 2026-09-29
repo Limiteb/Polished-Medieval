@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "polished_medieval",
+  "version": "${version}",
+  "name": "Polished Medieval",
+  "description": "Polished Medieval",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/polished_medieval/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "net.Polished.polished_medieval.client.Polished_medievalDataGenerator"
+    ],
+    "client": [
+      "net.Polished.polished_medieval.client.Polished_medievalClient"
+    ],
+    "main": [
+      "net.Polished.polished_medieval.Polished_medieval"
+    ]
+  },
+  "mixins": [
+    "polished_medieval.mixins.json",
+    {
+      "config": "polished_medieval.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
