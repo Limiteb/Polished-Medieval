@@ -10,7 +10,7 @@ public class Items {
     public static Item bloodshard = registerItem("bloodshard");
     public static Item ichor = registerItem("ichor");
 
-    public static void itemsCreativeRegister() {
+    public static void initializeItems() {
         creativeRegister(ItemGroups.INGREDIENTS, bloodshard);
         creativeRegister(ItemGroups.INGREDIENTS, ichor);
     }
