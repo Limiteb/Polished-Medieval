@@ -1,6 +1,5 @@
 package net.Polished.polished_medieval;
 
-import net.Polished.polished_medieval.Items.itemRegistry;
 import net.Polished.polished_medieval.Tools.toolRegistry;
 import net.fabricmc.api.ModInitializer;
 
