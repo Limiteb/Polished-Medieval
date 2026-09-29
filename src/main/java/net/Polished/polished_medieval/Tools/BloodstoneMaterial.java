@@ -3,7 +3,6 @@ package net.Polished.polished_medieval.Tools;
 import net.Polished.polished_medieval.Items.itemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.component.type.ToolComponent;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.tag.BlockTags;
