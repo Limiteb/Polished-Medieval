@@ -8,7 +8,7 @@ import net.minecraft.item.ItemGroups;
 import static net.Polished.polished_medieval.Registry.inventoryRegister.creativeRegister;
 
 public class Blocks extends blockRegistry{
-    public static final Block infusion_table = registerBlock("infusion_table", new Block(AbstractBlock.Settings.create()));
+    public static final Block infusion_table = registerBlock("infusion_table", new Block(AbstractBlock.Settings.create().hardness(3.5F)));
 
     public static void initializeBlocks() {
         creativeRegister(ItemGroups.FUNCTIONAL, infusion_table);
