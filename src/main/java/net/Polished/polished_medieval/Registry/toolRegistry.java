@@ -1,4 +1,4 @@
-package net.Polished.polished_medieval.Tools;
+package net.Polished.polished_medieval.Registry;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.*;
