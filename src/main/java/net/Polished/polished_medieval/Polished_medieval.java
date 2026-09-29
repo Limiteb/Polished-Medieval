@@ -2,6 +2,7 @@ package net.Polished.polished_medieval;
 
 import net.Polished.polished_medieval.Items.Items;
 import net.Polished.polished_medieval.Tools.BloodstoneTools;
+import net.Polished.polished_medieval.Blocks.blockRegistry;
 import net.fabricmc.api.ModInitializer;
 
 public class Polished_medieval implements ModInitializer {
@@ -10,5 +11,6 @@ public class Polished_medieval implements ModInitializer {
     public void onInitialize() {
         Items.itemsCreativeRegister();
         BloodstoneTools.initializeBloodstoneTools();
+        blockRegistry.LoadBlockRegistry();
     }
 }
