@@ -11,5 +11,4 @@ public class itemRegistry {
     public static Item registerItem(String name) {
         return Registry.register(Registries.ITEM, Identifier.of(MOD_ID, name), new Item(new Item.Settings()));
     }
-    public static void registerItems() {}
 }
