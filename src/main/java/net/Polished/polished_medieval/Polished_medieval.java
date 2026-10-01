@@ -2,6 +2,7 @@ package net.Polished.polished_medieval;
 
 import net.Polished.polished_medieval.Blocks.Blocks;
 import net.Polished.polished_medieval.Items.Items;
+import net.Polished.polished_medieval.Registry.blockEntityTypeRegistry;
 import net.Polished.polished_medieval.Tools.BloodstoneTools;
 import net.fabricmc.api.ModInitializer;
 
@@ -12,5 +13,6 @@ public class Polished_medieval implements ModInitializer {
         Items.initializeItems();
         BloodstoneTools.initializeBloodstoneTools();
         Blocks.initializeBlocks();
+        blockEntityTypeRegistry.initializeBlockEntityTypes();
     }
 }
