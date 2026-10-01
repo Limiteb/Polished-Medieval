@@ -1,4 +1,4 @@
-package net.Polished.polished_medieval.Blocks;
+package net.Polished.polished_medieval.Blocks.BloodstoneLantern;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;

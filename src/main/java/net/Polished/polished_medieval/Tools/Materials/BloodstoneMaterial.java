@@ -1,5 +1,6 @@
 package net.Polished.polished_medieval.Tools.Materials;
 
+import net.Polished.polished_medieval.Items.Bloodshard.Bloodshard;
 import net.Polished.polished_medieval.Items.Items;
 import net.minecraft.block.Block;
 import net.minecraft.component.type.ToolComponent;
@@ -7,6 +8,8 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
+
+import static net.Polished.polished_medieval.Items.Bloodshard.Bloodshard.bloodshard;
 
 public class BloodstoneMaterial implements ToolMaterial {
 
@@ -37,7 +40,7 @@ public class BloodstoneMaterial implements ToolMaterial {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return Ingredient.ofItems(Items.bloodshard);
+        return Ingredient.ofItems(bloodshard);
     }
 
     @Override
