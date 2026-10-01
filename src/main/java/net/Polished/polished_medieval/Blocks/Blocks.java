@@ -5,6 +5,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroups;
 
+import static net.Polished.polished_medieval.Blocks.BloodstoneLantern.bloodstone_lantern;
 import static net.Polished.polished_medieval.Registry.inventoryRegister.creativeRegister;
 
 public class Blocks extends blockRegistry{
@@ -12,5 +13,6 @@ public class Blocks extends blockRegistry{
 
     public static void initializeBlocks() {
         creativeRegister(ItemGroups.FUNCTIONAL, infusion_table);
+        creativeRegister(ItemGroups.BUILDING_BLOCKS, bloodstone_lantern);
     }
 }

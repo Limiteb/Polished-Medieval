@@ -4,9 +4,9 @@
   "version": "${version}",
   "name": "Polished Medieval",
   "description": "Polished Medieval",
-  "authors": [],
+  "authors": ["Limited", "1Hue", "Tazukino"],
   "contact": {},
-  "license": "All-Rights-Reserved",
+  "license": "MIT",
   "icon": "assets/polished_medieval/icon.png",
   "environment": "*",
   "entrypoints": {
