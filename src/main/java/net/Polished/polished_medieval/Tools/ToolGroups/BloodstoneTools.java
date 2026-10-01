@@ -1,9 +1,8 @@
-package net.Polished.polished_medieval.Tools;
+package net.Polished.polished_medieval.Tools.ToolGroups;
 
 import net.Polished.polished_medieval.Registry.toolRegistry;
 import net.Polished.polished_medieval.Tools.Materials.BloodstoneMaterial;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
 
 import static net.Polished.polished_medieval.Registry.inventoryRegister.creativeRegister;
 
@@ -13,14 +12,4 @@ public class BloodstoneTools extends toolRegistry {
     public static Item bloodstoneShovel = shovelRegister("bloodstone_shovel", new BloodstoneMaterial());
     public static Item bloodstoneAxe = axeRegister("bloodstone_axe", new BloodstoneMaterial());
     public static Item bloodstoneHoe = hoeRegister("bloodstone_hoe", new BloodstoneMaterial());
-
-    public static void initializeBloodstoneTools() {
-        creativeRegister(ItemGroups.COMBAT, bloodstoneSword);
-        creativeRegister(ItemGroups.COMBAT, bloodstoneAxe);
-        creativeRegister(ItemGroups.TOOLS, bloodstoneAxe);
-        creativeRegister(ItemGroups.TOOLS, bloodstonePickaxe);
-        creativeRegister(ItemGroups.TOOLS, bloodstoneShovel);
-        creativeRegister(ItemGroups.TOOLS, bloodstoneHoe);
-    }
-
 }

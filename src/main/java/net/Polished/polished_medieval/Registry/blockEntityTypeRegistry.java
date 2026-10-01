@@ -6,7 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
-import static net.Polished.polished_medieval.Blocks.Blocks.infusion_table;
+import static net.Polished.polished_medieval.Blocks.InfusionTable.InfusionTable.infusion_table;
 import static net.Polished.polished_medieval.Polished_medieval.MOD_ID;
 
 public class blockEntityTypeRegistry {
