@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -44,11 +45,23 @@ public class InfusionTableBlock extends BlockWithEntity {
         if (!world.isClient()) {
             BlockPos slavePos = getSlavePos(pos, state.get(FACING));
 
+            Direction slaveToMaster = getSlaveDirection(state.get(FACING));
+
             world.setBlockState(
                     slavePos,
-                    InfusionTable.infusion_table_slave.getDefaultState()
+                    InfusionTable.infusion_table_slave.getDefaultState().with(InfusionTableSlaveBlock.FACING, slaveToMaster)
             );
         }
+    }
+
+    private Direction getSlaveDirection(Direction masterFacing) {
+        return switch (masterFacing) {
+            case SOUTH -> Direction.WEST;
+            case WEST -> Direction.NORTH;
+            case NORTH -> Direction.EAST;
+            case EAST -> Direction.SOUTH;
+            default -> Direction.NORTH;
+        };
     }
 
     private BlockPos getSlavePos(BlockPos masterPos, Direction facing) {
@@ -59,6 +72,19 @@ public class InfusionTableBlock extends BlockWithEntity {
             case EAST -> masterPos.north();
             default -> masterPos;
         };
+    }
+
+    @Override
+    protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.isOf(newState.getBlock())) {
+            BlockPos slavePos = getSlavePos(pos, state.get(FACING));
+
+            if (world.getBlockState(slavePos).isOf(InfusionTable.infusion_table_slave)) {
+                world.removeBlock(slavePos, false);
+            }
+        }
+        super.onStateReplaced(state, world, pos, newState, moved);
+
     }
 
     // This is a check essentially to see what direction the block should be facing when placed

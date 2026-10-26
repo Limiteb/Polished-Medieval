@@ -2,6 +2,7 @@ package net.Polished.polished_medieval.Blocks.InfusionTable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -17,8 +18,21 @@ public class InfusionTableSlaveBlock extends Block {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
     public InfusionTableSlaveBlock(Settings settings) {
-        super(settings);
+        super(settings.pistonBehavior(PistonBehavior.BLOCK));
         setDefaultState(getStateManager().getDefaultState().with(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.isOf(newState.getBlock())) {
+            BlockPos masterPos = pos.offset(state.get(FACING));
+
+            if (world.getBlockState(masterPos).isOf(InfusionTable.infusion_table)) {
+                world.removeBlock(masterPos, false);
+            }
+        }
+        super.onStateReplaced(state, world, pos, newState, moved);
+
     }
 
     @Override
@@ -38,7 +52,9 @@ public class InfusionTableSlaveBlock extends Block {
         // Open the table's handled screen on the server, using its block entity as the screen
         // handler factory. The client receives the screen through the normal handled-screen flow.
         if (!world.isClient()) {
-            if (world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
+            BlockPos masterPos = pos.offset(state.get(FACING));
+
+            if (world.getBlockEntity(masterPos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
                 player.openHandledScreen(infusionTableBlockEntity);
             }
         }
