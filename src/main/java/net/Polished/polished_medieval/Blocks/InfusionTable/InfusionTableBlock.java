@@ -24,26 +24,35 @@ public class InfusionTableBlock extends BlockWithEntity {
 
     public InfusionTableBlock(Settings settings) {
         super(settings);
-
+        // Blocks have a default state that is used when no state is specified, including with /setblock.
+        // This table defaults to facing north; player placement selects a direction in getPlacementState.
         setDefaultState(getStateManager().getDefaultState().with(FACING, Direction.NORTH));
     }
 
+    // Registers FACING as one of this block's state properties.
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        // FACING is a vanilla horizontal-direction property; registering it makes it part of this block's states.
         builder.add(FACING);
     }
 
+
+    // This is a check essentially to see what direction the block should be facing when placed
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         return getDefaultState().with(FACING, context.getHorizontalPlayerFacing().getOpposite());
     }
 
+    // Creates the block entity for this table's world position. Its BlockState (including FACING) is
+    // passed in so the entity can initialize with the state of the placed block.
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         System.out.println("Block entity created at: " + pos);
         return new InfusionTableBlockEntity(pos, state);
     }
 
+
+    // Called when a player uses the block, such as by right-clicking it.
     @Override
     protected ActionResult onUse(
             BlockState state,
@@ -52,39 +61,45 @@ public class InfusionTableBlock extends BlockWithEntity {
             PlayerEntity player,
             BlockHitResult hit
     ) {
-        System.out.println(pos);
+//        if (!world.isClient()) {
+//            player.openHandledScreen(createScreenHandlerFactory(state, world, pos));
+//            System.out.println(pos);
+//        }
+
+        // Open the table's handled screen on the server, using its block entity as the screen
+        // handler factory. The client receives the screen through the normal handled-screen flow.
+        if (!world.isClient()) {
+            if (world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
+                player.openHandledScreen(infusionTableBlockEntity);
+            }
+        }
+
+        // Report the interaction as handled so it does not fall through to other block-use behavior.
         return ActionResult.SUCCESS;
     }
 
+    // Minecraft calls this placement-validity check before placing the block. Reject placement if
+    // the additional cell occupied by the table's structure is not replaceable.
     @Override
     protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        System.out.println(canPlace(pos, state.get(FACING), world));
         return canPlace(pos, state.get(FACING), world);
     }
 
+    // This boolean is used to check if the block can be placed in a 1x1X2 area.
     protected boolean canPlace(BlockPos pos, Direction blockDirection, WorldView world) {
-
         switch (blockDirection) {
             case SOUTH:
                 return
-                        world.getBlockState(pos.up()).isReplaceable()
-                        && world.getBlockState(pos.east().up()).isReplaceable()
-                        && world.getBlockState(pos.east()).isReplaceable();
+                        world.getBlockState(pos.east()).isReplaceable();
             case WEST:
                 return
-                        world.getBlockState(pos.up()).isReplaceable()
-                                && world.getBlockState(pos.south().up()).isReplaceable()
-                                && world.getBlockState(pos.south()).isReplaceable();
+                        world.getBlockState(pos.south()).isReplaceable();
             case NORTH:
                 return
-                        world.getBlockState(pos.up()).isReplaceable()
-                                && world.getBlockState(pos.west().up()).isReplaceable()
-                                && world.getBlockState(pos.west()).isReplaceable();
+                        world.getBlockState(pos.west()).isReplaceable();
             case EAST:
                 return
-                        world.getBlockState(pos.up()).isReplaceable()
-                                && world.getBlockState(pos.north().up()).isReplaceable()
-                                && world.getBlockState(pos.north()).isReplaceable();
+                        world.getBlockState(pos.north()).isReplaceable();
         }
         return false;
     }

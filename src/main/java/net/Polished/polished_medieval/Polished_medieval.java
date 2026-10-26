@@ -3,6 +3,7 @@ package net.Polished.polished_medieval;
 import net.Polished.polished_medieval.Blocks.Blocks;
 import net.Polished.polished_medieval.Items.Items;
 import net.Polished.polished_medieval.Registry.blockEntityTypeRegistry;
+import net.Polished.polished_medieval.Screen.ModScreenHandlers;
 import net.Polished.polished_medieval.Tools.Tools;
 import net.fabricmc.api.ModInitializer;
 
@@ -14,5 +15,6 @@ public class Polished_medieval implements ModInitializer {
         Tools.initializeTools();
         Blocks.initializeBlocks();
         blockEntityTypeRegistry.initializeBlockEntityTypes();
+        ModScreenHandlers.registerScreenHandlers();
     }
 }
