@@ -5,8 +5,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
@@ -36,6 +38,28 @@ public class InfusionTableBlock extends BlockWithEntity {
         builder.add(FACING);
     }
 
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+        if (!world.isClient()) {
+            BlockPos slavePos = getSlavePos(pos, state.get(FACING));
+
+            world.setBlockState(
+                    slavePos,
+                    InfusionTable.infusion_table_slave.getDefaultState()
+            );
+        }
+    }
+
+    private BlockPos getSlavePos(BlockPos masterPos, Direction facing) {
+        return switch (facing) {
+            case SOUTH -> masterPos.east();
+            case WEST -> masterPos.south();
+            case NORTH -> masterPos.west();
+            case EAST -> masterPos.north();
+            default -> masterPos;
+        };
+    }
 
     // This is a check essentially to see what direction the block should be facing when placed
     @Override
@@ -84,6 +108,7 @@ public class InfusionTableBlock extends BlockWithEntity {
     protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
         return canPlace(pos, state.get(FACING), world);
     }
+
 
     // This boolean is used to check if the block can be placed in a 1x1X2 area.
     protected boolean canPlace(BlockPos pos, Direction blockDirection, WorldView world) {

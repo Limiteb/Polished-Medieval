@@ -7,4 +7,5 @@ import net.minecraft.block.Block;
 public class InfusionTable extends blockRegistry {
     // Infusion table block registry
     public static final Block infusion_table = registerBlock("infusion_table", new net.Polished.polished_medieval.Blocks.InfusionTable.InfusionTableBlock(AbstractBlock.Settings.create()));
+    public static final Block infusion_table_slave = registerBlock("infusion_table_slave", new net.Polished.polished_medieval.Blocks.InfusionTable.InfusionTableSlaveBlock(AbstractBlock.Settings.create()));
 }
