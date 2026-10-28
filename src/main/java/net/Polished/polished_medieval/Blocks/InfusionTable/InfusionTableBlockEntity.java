@@ -8,16 +8,23 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ToolItem;
+import net.minecraft.item.ToolMaterials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+import static net.Polished.polished_medieval.Tools.ToolGroups.BloodstoneTools.*;
+import static net.Polished.polished_medieval.Tools.ToolGroups.IchorTools.*;
 import static net.minecraft.item.Items.BUCKET;
 import static net.Polished.polished_medieval.Registry.blockEntityTypeRegistry.INFUSION_TABLE_BLOCK_ENTITY;
 
@@ -25,6 +32,86 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
 
     private int bloodstoneQuantity = 0;
     private int ichorQuantity = 0;
+
+    private boolean craft(InfusionTableBlockEntity infusionTableBlockEntity, Item item) {
+        if (item instanceof ToolItem toolItem && toolItem.getMaterial() == ToolMaterials.NETHERITE) {
+
+            if (infusionTableBlockEntity.getBloodstoneQuantity() == 9) {
+                infusionTableBlockEntity.setBloodstoneQuantity(0);
+
+                if (infusionTableBlockEntity.getWorld() != null) {
+                    infusionTableBlockEntity.getWorld().playSound(
+                            null,
+                            infusionTableBlockEntity.getPos(),
+                            SoundEvents.ITEM_BRUSH_BRUSHING_SAND_COMPLETE,
+                            SoundCategory.BLOCKS,
+                            1.0F,
+                            1.0F
+                    );
+                }
+
+                infusionTableBlockEntity.setStack(0, item.getDefaultStack());
+                return true;
+            } else {
+                return false;
+            }
+
+        } else if (item instanceof ToolItem) {
+            if (infusionTableBlockEntity.getIchorQuantity() == 9) {
+                infusionTableBlockEntity.setIchorQuantity(0);
+
+                if (infusionTableBlockEntity.getWorld() != null) {
+                    infusionTableBlockEntity.getWorld().playSound(
+                            null,
+                            infusionTableBlockEntity.getPos(),
+                            SoundEvents.ITEM_BRUSH_BRUSHING_SAND_COMPLETE,
+                            SoundCategory.BLOCKS,
+                            1.0F,
+                            1.0F
+                    );
+                }
+
+                infusionTableBlockEntity.setStack(0, item.getDefaultStack());
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    // This method is called when the player right-clicks the infusion table with a brush.
+    public boolean craftItem(InfusionTableBlockEntity infusionTableBlockEntity) {
+
+        if (infusionTableBlockEntity.getStack(0).getItem() instanceof ToolItem toolItem && toolItem.getMaterial() == ToolMaterials.NETHERITE) {
+            // switch case sword axe pickaxe shovel hoe
+
+            switch (toolItem.getTranslationKey()) {
+                case "item.minecraft.netherite_sword":
+                    return craft(infusionTableBlockEntity, bloodstoneSword);
+                case "item.minecraft.netherite_axe":
+                    return craft(infusionTableBlockEntity, bloodstoneAxe);
+                case "item.minecraft.netherite_pickaxe":
+                    return craft(infusionTableBlockEntity, bloodstonePickaxe);
+                case "item.minecraft.netherite_shovel":
+                    return craft(infusionTableBlockEntity, bloodstoneShovel);
+                case "item.minecraft.netherite_hoe":
+                    return craft(infusionTableBlockEntity, bloodstoneHoe);
+                case "item.polished_medieval.bloodstone_sword":
+                    return craft(infusionTableBlockEntity, ichorSword);
+                case "item.polished_medieval.bloodstone_axe":
+                    return craft(infusionTableBlockEntity, ichorAxe);
+                case "item.polished_medieval.bloodstone_pickaxe":
+                    return craft(infusionTableBlockEntity, ichorPickaxe);
+                case "item.polished_medieval.bloodstone_shovel":
+                    return craft(infusionTableBlockEntity, ichorShovel);
+                case "item.polished_medieval.bloodstone_hoe":
+                    return craft(infusionTableBlockEntity, ichorHoe);
+            }
+        }
+        return false;
+    }
 
     // This sets the number of item slots, and the defaault item stack.
     private final DefaultedList<ItemStack> items =
@@ -137,8 +224,8 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
 
         Inventories.writeNbt(nbt, items, registries);
 
-        nbt.putInt("BloodstoneQuantity", bloodstoneQuantity);
-        nbt.putInt("IchorQuantity", ichorQuantity);
+        nbt.putInt("BloodstoneQuantity", getBloodstoneQuantity());
+        nbt.putInt("IchorQuantity", getIchorQuantity());
     }
 
     @Override
@@ -147,7 +234,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
 
         Inventories.readNbt(nbt, items, registries);
 
-        bloodstoneQuantity = nbt.getInt("BloodstoneQuantity");
-        ichorQuantity = nbt.getInt("IchorQuantity");
+        setBloodstoneQuantity(nbt.getInt("BloodstoneQuantity"));
+        setIchorQuantity(nbt.getInt("IchorQuantity"));
     }
 }

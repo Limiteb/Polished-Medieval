@@ -9,6 +9,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -23,8 +25,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-import static net.Polished.polished_medieval.Items.Bloodshard.Bloodshard.bloodshard;
-import static net.Polished.polished_medieval.Items.Ichor.Ichor.ichor;
+import static net.Polished.polished_medieval.Items.Bloodstone.Bloodstone.bloodstone;
+import static net.Polished.polished_medieval.Items.Bloodstone.Bloodstone.bucket_of_crystalized_blood;
+import static net.Polished.polished_medieval.Items.Ichor.Ichor.*;
 
 public class InfusionTableBlock extends BlockWithEntity {
 
@@ -81,7 +84,7 @@ public class InfusionTableBlock extends BlockWithEntity {
 
     @Override
     protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (!state.isOf(newState.getBlock())) {
+        if (!state.isOf(newState.getBlock()) && !world.isClient()) {
             BlockPos slavePos = getSlavePos(pos, state.get(FACING));
 
             if (world.getBlockState(slavePos).isOf(InfusionTable.infusion_table_slave)) {
@@ -100,26 +103,89 @@ public class InfusionTableBlock extends BlockWithEntity {
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (stack.isOf(bloodshard) && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
+        // Crafting Logic
+        if (!world.isClient() && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity && stack.isOf(Items.BRUSH)) {
+            if (infusionTableBlockEntity.getStack(0).isEmpty() || (!(infusionTableBlockEntity.getBloodstoneQuantity() == 9) || !(infusionTableBlockEntity.getIchorQuantity() == 9))) {
+                return ItemActionResult.FAIL;
+            }
+
+            if (infusionTableBlockEntity.craftItem(infusionTableBlockEntity)) {
+                return ItemActionResult.SUCCESS;
+
+            } else {
+                return ItemActionResult.FAIL;
+
+            }
+
+        }
+
+        // Bloodstone Logic
+        if (!world.isClient() && (stack.isOf(bloodstone) || stack.isOf(bucket_of_crystalized_blood)) && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
             int quantity = infusionTableBlockEntity.getBloodstoneQuantity();
-            if (quantity < 9) {
-                infusionTableBlockEntity.setBloodstoneQuantity(quantity + 1);
+            int quantityToAdd = 0;
+
+            switch (stack.getItem().toString()) {
+                case "polished_medieval:bloodstone" -> quantityToAdd = 1;
+                case "polished_medieval:bucket_of_crystalized_blood" -> quantityToAdd = 9;
+            }
+
+            if (quantity + quantityToAdd <= 9) {
+                infusionTableBlockEntity.setBloodstoneQuantity(quantity + quantityToAdd);
                 if (!player.isCreative()) {
-                    stack.decrement(1);
-                    player.playSound(SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, 1F, (float) quantity /2);
+                    ItemStack handStack = player.getStackInHand(hand);
+                    if (handStack.isOf(bucket_of_crystalized_blood)) {
+                        handStack.decrement(1);
+                        // If the consumed bucket was the only item (usual case, max stack is 1):
+                        if (handStack.isEmpty()) {
+                            player.setStackInHand(hand, new ItemStack(Items.BUCKET, 1));
+                        } else {
+                            player.getInventory().insertStack(new ItemStack(Items.BUCKET, 1));
+                        }
+                    } else {
+                        handStack.decrement(1);
+                    }
+                    world.playSound(
+                            null,
+                            pos,
+                            SoundEvents.BLOCK_END_PORTAL_FRAME_FILL,
+                            SoundCategory.BLOCKS,
+                            1.0F,
+                            (float) (quantity + quantityToAdd) / 2.0F
+                    );
                 }
                 return ItemActionResult.SUCCESS;
             } else {
                 return ItemActionResult.FAIL;
             }
 
-        } else if (stack.isOf(ichor) && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
+            // Ichor Logic
+        } else if (!world.isClient() && (stack.isOf(drop_of_ichor) || stack.isOf(vial_of_ichor) || stack.isOf(bucket_of_ichor)) && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
             int quantity = infusionTableBlockEntity.getIchorQuantity();
-            if (quantity < 9) {
-                infusionTableBlockEntity.setIchorQuantity(quantity + 1);
+            int quantityToAdd = 0;
+
+            switch (stack.getItem().toString()) {
+                case "polished_medieval:drop_of_ichor" -> quantityToAdd = 1;
+                case "polished_medieval:vial_of_ichor" -> quantityToAdd = 3;
+                case "polished_medieval:bucket_of_ichor" -> quantityToAdd = 9;
+            }
+
+            if (quantity + quantityToAdd <= 9) {
+                infusionTableBlockEntity.setIchorQuantity(quantity + quantityToAdd);
                 if (!player.isCreative()) {
-                    stack.decrement(1);
-                    player.playSound(SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, 1F, (float) quantity /2);
+                    ItemStack handStack = player.getStackInHand(hand);
+                    if (handStack.isOf(bucket_of_ichor)) {
+                        handStack.decrement(1);
+
+                        // If the consumed bucket was the only item (usual case, max stack is 1):
+                        if (handStack.isEmpty()) {
+                            player.setStackInHand(hand, new ItemStack(Items.BUCKET, 1));
+                        } else {
+                            player.getInventory().insertStack(new ItemStack(Items.BUCKET, 1));
+                        }
+                    } else {
+                        handStack.decrement(1);
+                    }
+                    player.playSound(SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, 1F, (float) (quantity + quantityToAdd) / 2);
                 }
                 return ItemActionResult.SUCCESS;
             } else {
@@ -134,7 +200,6 @@ public class InfusionTableBlock extends BlockWithEntity {
     // passed in so the entity can initialize with the state of the placed block.
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        System.out.println("Block entity created at: " + pos);
         return new InfusionTableBlockEntity(pos, state);
     }
 

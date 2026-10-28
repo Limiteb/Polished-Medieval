@@ -4,9 +4,17 @@
   "item.polished_medieval.bloodstone_pickaxe": "Bloodstone Pickaxe",
   "item.polished_medieval.bloodstone_shovel": "Bloodstone Shovel",
   "item.polished_medieval.bloodstone_hoe": "Bloodstone Hoe",
+  "item.polished_medieval.ichor_sword": "Ichor Sword",
+  "item.polished_medieval.ichor_axe": "Ichor Axe",
+  "item.polished_medieval.ichor_pickaxe": "Ichor Pickaxe",
+  "item.polished_medieval.ichor_shovel": "Ichor Shovel",
+  "item.polished_medieval.ichor_hoe": "Ichor Hoe",
 
   "item.polished_medieval.bloodshard": "Blood Shard",
-  "item.polished_medieval.ichor": "Ichor Shard",
+  "item.polished_medieval.drop_of_ichor": "Drop of Ichor",
+  "item.polished_medieval.vial_of_ichor": "Vial of Ichor",
+  "item.polished_medieval.bucket_of_crystalized_blood": "Bucket of Crystalized Blood",
+  "item.polished_medieval.bucket_of_ichor": "Bucket of Ichor",
 
   "item.polished_medieval.infusion_table": "Infusion Table",
   "block.polished_medieval.infusion_table": "Infusion Table",
