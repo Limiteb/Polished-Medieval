@@ -26,7 +26,7 @@ import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 import static net.Polished.polished_medieval.Items.Bloodstone.Bloodstone.bloodstone;
-import static net.Polished.polished_medieval.Items.Bloodstone.Bloodstone.bucket_of_crystalized_blood;
+import static net.Polished.polished_medieval.Items.Bloodstone.Bloodstone.bucket_of_crystallized_blood;
 import static net.Polished.polished_medieval.Items.Ichor.Ichor.*;
 
 public class InfusionTableBlock extends BlockWithEntity {
@@ -120,20 +120,20 @@ public class InfusionTableBlock extends BlockWithEntity {
         }
 
         // Bloodstone Logic
-        if (!world.isClient() && (stack.isOf(bloodstone) || stack.isOf(bucket_of_crystalized_blood)) && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
+        if (!world.isClient() && (stack.isOf(bloodstone) || stack.isOf(bucket_of_crystallized_blood)) && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
             int quantity = infusionTableBlockEntity.getBloodstoneQuantity();
             int quantityToAdd = 0;
 
             switch (stack.getItem().toString()) {
                 case "polished_medieval:bloodstone" -> quantityToAdd = 1;
-                case "polished_medieval:bucket_of_crystalized_blood" -> quantityToAdd = 9;
+                case "polished_medieval:bucket_of_crystallized_blood" -> quantityToAdd = 9;
             }
 
             if (quantity + quantityToAdd <= 9) {
                 infusionTableBlockEntity.setBloodstoneQuantity(quantity + quantityToAdd);
                 if (!player.isCreative()) {
                     ItemStack handStack = player.getStackInHand(hand);
-                    if (handStack.isOf(bucket_of_crystalized_blood)) {
+                    if (handStack.isOf(bucket_of_crystallized_blood)) {
                         handStack.decrement(1);
                         // If the consumed bucket was the only item (usual case, max stack is 1):
                         if (handStack.isEmpty()) {
@@ -242,17 +242,13 @@ public class InfusionTableBlock extends BlockWithEntity {
     protected boolean canPlace(BlockPos pos, Direction blockDirection, WorldView world) {
         switch (blockDirection) {
             case SOUTH:
-                return
-                        world.getBlockState(pos.east()).isReplaceable();
+                return world.getBlockState(pos.east()).isReplaceable();
             case WEST:
-                return
-                        world.getBlockState(pos.south()).isReplaceable();
+                return world.getBlockState(pos.south()).isReplaceable();
             case NORTH:
-                return
-                        world.getBlockState(pos.west()).isReplaceable();
+                return world.getBlockState(pos.west()).isReplaceable();
             case EAST:
-                return
-                        world.getBlockState(pos.north()).isReplaceable();
+                return world.getBlockState(pos.north()).isReplaceable();
         }
         return false;
     }

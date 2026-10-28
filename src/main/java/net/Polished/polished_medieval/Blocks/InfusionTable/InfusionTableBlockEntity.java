@@ -98,6 +98,9 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
                     return craft(infusionTableBlockEntity, bloodstoneShovel);
                 case "item.minecraft.netherite_hoe":
                     return craft(infusionTableBlockEntity, bloodstoneHoe);
+            }
+        } else if (infusionTableBlockEntity.getStack(0).getItem() instanceof ToolItem toolItem){
+            switch (toolItem.getTranslationKey()) {
                 case "item.polished_medieval.bloodstone_sword":
                     return craft(infusionTableBlockEntity, ichorSword);
                 case "item.polished_medieval.bloodstone_axe":

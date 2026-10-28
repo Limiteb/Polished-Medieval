@@ -11,6 +11,8 @@ import static net.Polished.polished_medieval.Items.Ichor.Ichor.drop_of_ichor;
 
 public class IchorMaterial implements ToolMaterial {
 
+    public static final IchorMaterial INSTANCE = new IchorMaterial();
+
     @Override
     public int getDurability() {
         return 1500;
