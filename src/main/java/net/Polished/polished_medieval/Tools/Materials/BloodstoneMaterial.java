@@ -11,6 +11,8 @@ import static net.Polished.polished_medieval.Items.Bloodstone.Bloodstone.bloodst
 
 public class BloodstoneMaterial implements ToolMaterial {
 
+    public static final BloodstoneMaterial INSTANCE = new BloodstoneMaterial();
+
     @Override
     public int getDurability() {
         return 1500;

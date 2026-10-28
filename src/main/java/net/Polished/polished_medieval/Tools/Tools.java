@@ -3,6 +3,7 @@ package net.Polished.polished_medieval.Tools;
 import net.minecraft.item.ItemGroups;
 
 import static net.Polished.polished_medieval.Registry.inventoryRegister.creativeRegister;
+import static net.Polished.polished_medieval.Tools.Dagger.Dagger.BloodstoneDagger;
 import static net.Polished.polished_medieval.Tools.ToolGroups.BloodstoneTools.*;
 import static net.Polished.polished_medieval.Tools.ToolGroups.IchorTools.*;
 
@@ -20,7 +21,6 @@ public class Tools {
         creativeRegister(ItemGroups.TOOLS, bloodstonePickaxe);
         creativeRegister(ItemGroups.TOOLS, bloodstoneShovel);
         creativeRegister(ItemGroups.TOOLS, bloodstoneHoe);
-
-
+        creativeRegister(ItemGroups.COMBAT, BloodstoneDagger);
     }
 }
