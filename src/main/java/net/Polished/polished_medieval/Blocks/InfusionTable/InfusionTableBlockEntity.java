@@ -18,9 +18,13 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+import static net.minecraft.item.Items.BUCKET;
 import static net.Polished.polished_medieval.Registry.blockEntityTypeRegistry.INFUSION_TABLE_BLOCK_ENTITY;
 
 public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, Inventory {
+
+    private int bloodstoneQuantity = 0;
+    private int ichorQuantity = 0;
 
     // This sets the number of item slots, and the defaault item stack.
     private final DefaultedList<ItemStack> items =
@@ -82,6 +86,11 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
 
     @Override
     public void setStack(int slot, ItemStack stack) {
+        // Make sure that it is a bucket in either slot 1 or 2. No check for slot 0.
+        if (!stack.isOf(BUCKET) && (slot == 1 || slot == 2)) {
+            return;
+        }
+
         items.set(slot, stack);
         markDirty();
     }
@@ -98,6 +107,24 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
         ) <= 64.0;
     }
 
+    public int getBloodstoneQuantity() {
+        return bloodstoneQuantity;
+    }
+
+    public int getIchorQuantity() {
+        return ichorQuantity;
+    }
+
+    public void setBloodstoneQuantity(int bloodstoneQuantity) {
+        this.bloodstoneQuantity = bloodstoneQuantity;
+        markDirty();
+    }
+
+    public void setIchorQuantity(int ichorQuantity) {
+        this.ichorQuantity = ichorQuantity;
+        markDirty();
+    }
+
     @Override
     public void clear() {
         items.clear();
@@ -107,12 +134,20 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.writeNbt(nbt, registries);
+
         Inventories.writeNbt(nbt, items, registries);
+
+        nbt.putInt("BloodstoneQuantity", bloodstoneQuantity);
+        nbt.putInt("IchorQuantity", ichorQuantity);
     }
 
     @Override
     public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.readNbt(nbt, registries);
+
         Inventories.readNbt(nbt, items, registries);
+
+        bloodstoneQuantity = nbt.getInt("BloodstoneQuantity");
+        ichorQuantity = nbt.getInt("IchorQuantity");
     }
 }

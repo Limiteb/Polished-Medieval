@@ -5,21 +5,26 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
+
+import static net.Polished.polished_medieval.Items.Bloodshard.Bloodshard.bloodshard;
+import static net.Polished.polished_medieval.Items.Ichor.Ichor.ichor;
 
 public class InfusionTableBlock extends BlockWithEntity {
 
@@ -93,6 +98,38 @@ public class InfusionTableBlock extends BlockWithEntity {
         return getDefaultState().with(FACING, context.getHorizontalPlayerFacing().getOpposite());
     }
 
+    @Override
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (stack.isOf(bloodshard) && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
+            int quantity = infusionTableBlockEntity.getBloodstoneQuantity();
+            if (quantity < 9) {
+                infusionTableBlockEntity.setBloodstoneQuantity(quantity + 1);
+                if (!player.isCreative()) {
+                    stack.decrement(1);
+                    player.playSound(SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, 1F, (float) quantity /2);
+                }
+                return ItemActionResult.SUCCESS;
+            } else {
+                return ItemActionResult.FAIL;
+            }
+
+        } else if (stack.isOf(ichor) && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
+            int quantity = infusionTableBlockEntity.getIchorQuantity();
+            if (quantity < 9) {
+                infusionTableBlockEntity.setIchorQuantity(quantity + 1);
+                if (!player.isCreative()) {
+                    stack.decrement(1);
+                    player.playSound(SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, 1F, (float) quantity /2);
+                }
+                return ItemActionResult.SUCCESS;
+            } else {
+                return ItemActionResult.FAIL;
+            }
+
+        }
+        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+    }
+
     // Creates the block entity for this table's world position. Its BlockState (including FACING) is
     // passed in so the entity can initialize with the state of the placed block.
     @Override
@@ -100,7 +137,6 @@ public class InfusionTableBlock extends BlockWithEntity {
         System.out.println("Block entity created at: " + pos);
         return new InfusionTableBlockEntity(pos, state);
     }
-
 
     // Called when a player uses the block, such as by right-clicking it.
     @Override
@@ -111,16 +147,17 @@ public class InfusionTableBlock extends BlockWithEntity {
             PlayerEntity player,
             BlockHitResult hit
     ) {
-//        if (!world.isClient()) {
-//            player.openHandledScreen(createScreenHandlerFactory(state, world, pos));
-//            System.out.println(pos);
-//        }
 
         // Open the table's handled screen on the server, using its block entity as the screen
         // handler factory. The client receives the screen through the normal handled-screen flow.
         if (!world.isClient()) {
             if (world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
-                player.openHandledScreen(infusionTableBlockEntity);
+                if (player.getMainHandStack().isEmpty() && player.isSneaking() && !infusionTableBlockEntity.getStack(0).isEmpty()) {
+                    player.setStackInHand(Hand.MAIN_HAND, infusionTableBlockEntity.getStack(0));
+                    infusionTableBlockEntity.setStack(0, ItemStack.EMPTY);
+                } else {
+                    player.openHandledScreen(infusionTableBlockEntity);
+                }
             }
         }
 

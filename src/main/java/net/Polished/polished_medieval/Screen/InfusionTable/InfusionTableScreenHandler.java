@@ -10,6 +10,8 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
+import static net.minecraft.item.Items.BUCKET;
+
 public class InfusionTableScreenHandler extends ScreenHandler {
     private final Inventory inventory;
 
@@ -22,8 +24,28 @@ public class InfusionTableScreenHandler extends ScreenHandler {
         this.inventory = (Inventory) blockEntity;
 
         this.addSlot(new Slot(inventory, 0, 80, 35));
-        this.addSlot(new Slot(inventory, 1, 56, 11));
-        this.addSlot(new Slot(inventory, 2, 104, 59));
+        this.addSlot(new Slot(inventory, 1, 56, 11) {
+            @Override
+            public boolean canInsert(ItemStack stack) {
+                return stack.isOf(BUCKET);
+            }
+
+            @Override
+            public int getMaxItemCount() {
+                return 1;
+            }
+        });
+        this.addSlot(new Slot(inventory, 2, 104, 59){
+            @Override
+            public boolean canInsert(ItemStack stack) {
+                return stack.isOf(BUCKET);
+            }
+
+            @Override
+            public int getMaxItemCount() {
+                return 1;
+            }
+        });
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
