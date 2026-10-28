@@ -46,4 +46,12 @@ public class InfusionTableScreen extends HandledScreen<InfusionTableScreenHandle
         context.drawTexture(GUI_TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
     }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+
+        this.renderBackground(context, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
+        this.drawMouseoverTooltip(context, mouseX, mouseY);
+    }
 }
