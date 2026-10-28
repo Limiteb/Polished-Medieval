@@ -53,8 +53,30 @@ public class InfusionTableScreenHandler extends ScreenHandler {
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
-        // TO DO
-        return null;
+        Slot sourceSlot = this.getSlot(invSlot);
+
+        if (!sourceSlot.hasStack()) { return ItemStack.EMPTY; }
+
+        ItemStack sourceStack = sourceSlot.getStack();
+        ItemStack copyStack = sourceStack.copy();
+
+        if (invSlot >= 3) {
+            if (!this.insertItem(sourceStack, 1, 2, false)
+                    && !this.insertItem(sourceStack, 2, 3, false)
+                    && !this.insertItem(sourceStack, 0, 1, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (!this.insertItem(sourceStack, 3, this.slots.size(), true)) {
+            return ItemStack.EMPTY;
+        }
+
+        if (sourceStack.isEmpty()) {
+            sourceSlot.setStack(ItemStack.EMPTY);
+        } else {
+            sourceSlot.markDirty();
+        }
+
+        return copyStack;
     }
 
     @Override
