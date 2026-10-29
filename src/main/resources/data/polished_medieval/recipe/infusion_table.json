@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "G G",
+    "SSS",
+    " I "
+  ],
+  "key": {
+    "G": "minecraft:glass_bottle",
+    "S": "#minecraft:wooden_slabs",
+    "I": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "polished_medieval:infusion_table",
+    "count": 1
+  }
+}

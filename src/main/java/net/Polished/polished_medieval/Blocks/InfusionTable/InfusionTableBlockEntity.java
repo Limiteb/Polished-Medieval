@@ -23,6 +23,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+import net.Polished.polished_medieval.Tools.Materials.BloodstoneMaterial;
 import static net.Polished.polished_medieval.Tools.ToolGroups.BloodstoneTools.*;
 import static net.Polished.polished_medieval.Tools.ToolGroups.IchorTools.*;
 import static net.minecraft.item.Items.BUCKET;
@@ -34,7 +35,7 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
     private int ichorQuantity = 0;
 
     private boolean craft(InfusionTableBlockEntity infusionTableBlockEntity, Item item) {
-        if (item instanceof ToolItem toolItem && toolItem.getMaterial() == ToolMaterials.NETHERITE) {
+        if (item instanceof ToolItem toolItem && toolItem.getMaterial() == BloodstoneMaterial.INSTANCE) {
 
             if (infusionTableBlockEntity.getBloodstoneQuantity() == 9) {
                 infusionTableBlockEntity.setBloodstoneQuantity(0);

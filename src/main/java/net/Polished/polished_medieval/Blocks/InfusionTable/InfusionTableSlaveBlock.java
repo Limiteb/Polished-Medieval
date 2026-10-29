@@ -44,10 +44,10 @@ public class InfusionTableSlaveBlock extends Block {
         BlockState masterState = world.getBlockState(masterPos);
 
         if (masterState.isOf(InfusionTable.infusion_table)) {
-            return ((InfusionTableBlock) masterState.getBlock())
-                    .onUseWithItem(stack, masterState, world, masterPos, player, hand, hit);
+            return ((InfusionTableBlock) masterState.getBlock()).onUseWithItem(stack, masterState, world, masterPos, player, hand, hit);
         }
-
+        
+        System.out.println("Master block not found at expected position: " + masterPos);
         return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 

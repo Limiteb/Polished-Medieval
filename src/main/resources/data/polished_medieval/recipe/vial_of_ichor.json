@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "III",
+    " B "
+  ],
+  "key": {
+    "B": "minecraft:glass_bottle",
+    "I": "polished_medieval:drop_of_ichor"
+  },
+  "result": {
+    "id": "polished_medieval:vial_of_ichor",
+    "count": 1
+  }
+}

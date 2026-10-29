@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  G",
+    " D ",
+    "S  "
+  ],
+  "key": {
+    "G": "minecraft:glass_block",
+    "S": "minecraft:stick",
+    "D": "minecraft:gold_ingot"
+  },
+  "result": {
+    "id": "polished_medieval:gold_dagger",
+    "count": 1
+  }
+}

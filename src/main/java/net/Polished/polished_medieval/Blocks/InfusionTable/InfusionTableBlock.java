@@ -7,6 +7,7 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -18,6 +19,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -90,6 +92,23 @@ public class InfusionTableBlock extends BlockWithEntity {
             if (world.getBlockState(slavePos).isOf(InfusionTable.infusion_table_slave)) {
                 world.removeBlock(slavePos, false);
             }
+
+            if (world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity) {
+
+                ItemStack bloodstoneStack = new ItemStack(bloodstone, infusionTableBlockEntity.getBloodstoneQuantity());
+                ItemStack ichorStack = new ItemStack(drop_of_ichor, infusionTableBlockEntity.getIchorQuantity());
+                ItemStack infusionTableStack = new ItemStack(InfusionTable.infusion_table, 1);
+
+                ItemScatterer.spawn(world, pos, infusionTableBlockEntity);
+                ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), infusionTableStack);
+                if (!bloodstoneStack.isEmpty()) {
+                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), bloodstoneStack);
+                }
+                if (!ichorStack.isEmpty()) {
+                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ichorStack);
+                }
+            }
+
         }
         super.onStateReplaced(state, world, pos, newState, moved);
 
@@ -185,7 +204,14 @@ public class InfusionTableBlock extends BlockWithEntity {
                     } else {
                         handStack.decrement(1);
                     }
-                    player.playSound(SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, 1F, (float) (quantity + quantityToAdd) / 2);
+                    world.playSound(
+                            null,
+                            pos,
+                            SoundEvents.BLOCK_END_PORTAL_FRAME_FILL,
+                            SoundCategory.BLOCKS,
+                            1.0F,
+                            (float) (quantity + quantityToAdd) / 2.0F
+                    );
                 }
                 return ItemActionResult.SUCCESS;
             } else {
