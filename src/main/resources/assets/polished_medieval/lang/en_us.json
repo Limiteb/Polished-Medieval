@@ -10,6 +10,16 @@
   "item.polished_medieval.ichor_shovel": "Ichor Shovel",
   "item.polished_medieval.ichor_hoe": "Ichor Hoe",
 
+  "item.polished_medieval.wooden_dagger": "Wooden Dagger",
+  "item.polished_medieval.stone_dagger": "Stone Dagger",
+  "item.polished_medieval.iron_dagger": "Iron Dagger",
+  "item.polished_medieval.gold_dagger": "Gold Dagger",
+  "item.polished_medieval.diamond_dagger": "Diamond Dagger",
+  "item.polished_medieval.netherite_dagger": "Netherite Dagger",
+  "item.polished_medieval.bloodstone_dagger": "Bloodstone Dagger",
+  "item.polished_medieval.ichor_dagger": "Ichor Dagger",
+
+
   "item.polished_medieval.bloodshard": "Blood Shard",
   "item.polished_medieval.drop_of_ichor": "Drop of Ichor",
   "item.polished_medieval.vial_of_ichor": "Vial of Ichor",

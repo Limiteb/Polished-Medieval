@@ -1,6 +1,5 @@
 package net.Polished.polished_medieval.Tools.Dagger;
 
-import net.Polished.polished_medieval.Tools.Materials.BloodstoneMaterial;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,11 +18,11 @@ import net.minecraft.world.World;
 import static net.Polished.polished_medieval.Polished_medieval.MOD_ID;
 
 public class Dagger extends SwordItem implements ProjectileItem {
-    public Dagger(ToolMaterial material, Item.Settings settings) {
+    private final int attackDamage;
+    public Dagger(ToolMaterial material, Item.Settings settings, int attackDamage) {
         super(material, settings);
+        this.attackDamage = attackDamage;
     }
-    public static Item BloodstoneDagger = Registry.register(Registries.ITEM, Identifier.of(MOD_ID, "bloodstone_dagger"), new Dagger(BloodstoneMaterial.INSTANCE,  new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(BloodstoneMaterial.INSTANCE, 2, -1.6F))));
-    //public static Item IchorDagger = Registry.register(Registries.ITEM, Identifier.of(MOD_ID, "ichor_dagger"), new Dagger(BloodstoneMaterial.INSTANCE,  new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(BloodstoneMaterial.INSTANCE, 4, -1.6F))));
     public static EntityType<DaggerEntity> DaggerEntityType = Registry.register(Registries.ENTITY_TYPE, Identifier.of(MOD_ID, "dagger_entitytype"), EntityType.Builder.<DaggerEntity>create(DaggerEntity::new, SpawnGroup.MISC).dimensions(0.25f,0.25f).build());
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -31,6 +30,7 @@ public class Dagger extends SwordItem implements ProjectileItem {
         ItemStack itemStack = user.getStackInHand(hand);
         if (!world.isClient()) {
             daggerEntity.setItem(itemStack);
+            daggerEntity.setDamage(attackDamage);
             daggerEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 2.5F, 0.0F);
             world.spawnEntity(daggerEntity);
         }
@@ -44,6 +44,9 @@ public class Dagger extends SwordItem implements ProjectileItem {
     public ProjectileEntity createEntity(World world, Position pos, ItemStack stack, Direction direction) {
         DaggerEntity daggerEntity = new DaggerEntity(world, pos.getX(), pos.getY(), pos.getZ());
         daggerEntity.setItem(stack);
+        if (stack.getItem() instanceof Dagger dagger) {
+            daggerEntity.setDamage(dagger.attackDamage);
+        }
         return daggerEntity;
     }
 }
