@@ -15,6 +15,10 @@ public class blockRegistry {
         Registry.register(Registries.ITEM, Identifier.of(MOD_ID, name), new BlockItem(block, new Item.Settings()));
     }
 
+    public static Block registerBlockWithoutItem(String name, Block block) {
+        return Registry.register(Registries.BLOCK, Identifier.of(MOD_ID, name), block);
+    }
+
     // Block Registry Method
     public static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

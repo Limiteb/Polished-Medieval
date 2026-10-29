@@ -126,7 +126,7 @@ public class InfusionTableBlock extends BlockWithEntity {
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         // Crafting Logic
         if (!world.isClient() && world.getBlockEntity(pos) instanceof InfusionTableBlockEntity infusionTableBlockEntity && stack.isOf(Items.BRUSH)) {
-            if (infusionTableBlockEntity.getStack(0).isEmpty() || (!(infusionTableBlockEntity.getBloodstoneQuantity() == 9) || !(infusionTableBlockEntity.getIchorQuantity() == 9))) {
+            if (infusionTableBlockEntity.getStack(0).isEmpty()) {
                 return ItemActionResult.FAIL;
             }
 

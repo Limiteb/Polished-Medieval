@@ -24,6 +24,7 @@ import net.Polished.polished_medieval.Tools.Materials.BloodstoneMaterial;
 
 import static net.Polished.polished_medieval.Items.Bloodstone.Bloodstone.bucket_of_crystallized_blood;
 import static net.Polished.polished_medieval.Items.Ichor.Ichor.bucket_of_ichor;
+import static net.Polished.polished_medieval.Tools.Dagger.DaggerTools.*;
 import static net.Polished.polished_medieval.Tools.ToolGroups.BloodstoneTools.*;
 import static net.Polished.polished_medieval.Tools.ToolGroups.IchorTools.*;
 import static net.minecraft.item.Items.BUCKET;
@@ -99,6 +100,8 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
                     return craft(infusionTableBlockEntity, bloodstoneShovel);
                 case "item.minecraft.netherite_hoe":
                     return craft(infusionTableBlockEntity, bloodstoneHoe);
+                case "item.polished_medieval.netherite_dagger":
+                    return craft(infusionTableBlockEntity, BloodstoneDagger);
             }
         } else if (infusionTableBlockEntity.getStack(0).getItem() instanceof ToolItem toolItem){
             switch (toolItem.getTranslationKey()) {
@@ -112,6 +115,8 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
                     return craft(infusionTableBlockEntity, ichorShovel);
                 case "item.polished_medieval.bloodstone_hoe":
                     return craft(infusionTableBlockEntity, ichorHoe);
+                case "item.polished_medieval.bloodstone_dagger":
+                    return craft(infusionTableBlockEntity, IchorDagger);
             }
         }
         return false;

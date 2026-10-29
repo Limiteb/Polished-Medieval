@@ -6,9 +6,15 @@
     "S  "
   ],
   "key": {
-    "G": "minecraft:glass_block",
-    "S": "minecraft:stick",
-    "D": "#minecraft:planks"
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "D": {
+      "tag": "minecraft:planks"
+    }
   },
   "result": {
     "id": "polished_medieval:wooden_dagger",

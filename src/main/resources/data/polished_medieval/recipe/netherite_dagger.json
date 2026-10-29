@@ -1,9 +1,16 @@
 {
   "type": "minecraft:smithing_transform",
-  "template": "minecraft:netherite_upgrade_smithing_template",
-  "base": "polished_medieval:diamond_dagger",
-  "addition": "minecraft:netherite_ingot",
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  },
+  "base": {
+    "item": "polished_medieval:diamond_dagger"
+  },
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
   "result": {
-    "id": "polished_medieval:netherite_dagger"
+    "id": "polished_medieval:netherite_dagger",
+    "count": 1
   }
 }

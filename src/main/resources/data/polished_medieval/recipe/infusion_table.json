@@ -6,9 +6,15 @@
     " I "
   ],
   "key": {
-    "G": "minecraft:glass_bottle",
-    "S": "#minecraft:wooden_slabs",
-    "I": "minecraft:iron_block"
+    "G": {
+      "item": "minecraft:glass_bottle"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    }
   },
   "result": {
     "id": "polished_medieval:infusion_table",

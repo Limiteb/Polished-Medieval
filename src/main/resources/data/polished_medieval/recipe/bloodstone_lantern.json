@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NNN",
+    "NBN",
+    "NNN"
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "B": {
+      "item": "polished_medieval:bloodstone"
+    }
+  },
+  "result": {
+    "id": "polished_medieval:bloodstone_lantern",
+    "count": 1
+  }
+}

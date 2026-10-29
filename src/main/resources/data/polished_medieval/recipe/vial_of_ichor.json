@@ -6,8 +6,12 @@
     " B "
   ],
   "key": {
-    "B": "minecraft:glass_bottle",
-    "I": "polished_medieval:drop_of_ichor"
+    "B": {
+      "item": "minecraft:glass_bottle"
+    },
+    "I": {
+      "item": "polished_medieval:drop_of_ichor"
+    }
   },
   "result": {
     "id": "polished_medieval:vial_of_ichor",
