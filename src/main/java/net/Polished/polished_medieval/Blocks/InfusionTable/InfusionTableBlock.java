@@ -1,6 +1,7 @@
 package net.Polished.polished_medieval.Blocks.InfusionTable;
 
 import com.mojang.serialization.MapCodec;
+import net.Polished.polished_medieval.Items.Ichor.Ichor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -25,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.Polished.polished_medieval.Items.Bloodstone.Bloodstone.bloodstone;
@@ -150,29 +152,7 @@ public class InfusionTableBlock extends BlockWithEntity {
 
             if (quantity + quantityToAdd <= 9) {
                 infusionTableBlockEntity.setBloodstoneQuantity(quantity + quantityToAdd);
-                if (!player.isCreative()) {
-                    ItemStack handStack = player.getStackInHand(hand);
-                    if (handStack.isOf(bucket_of_crystallized_blood)) {
-                        handStack.decrement(1);
-                        // If the consumed bucket was the only item (usual case, max stack is 1):
-                        if (handStack.isEmpty()) {
-                            player.setStackInHand(hand, new ItemStack(Items.BUCKET, 1));
-                        } else {
-                            player.getInventory().insertStack(new ItemStack(Items.BUCKET, 1));
-                        }
-                    } else {
-                        handStack.decrement(1);
-                    }
-                    world.playSound(
-                            null,
-                            pos,
-                            SoundEvents.BLOCK_END_PORTAL_FRAME_FILL,
-                            SoundCategory.BLOCKS,
-                            1.0F,
-                            (float) (quantity + quantityToAdd) / 2.0F
-                    );
-                }
-                return ItemActionResult.SUCCESS;
+                return getItemActionResult(world, pos, player, hand, quantity, quantityToAdd, bucket_of_crystallized_blood);
             } else {
                 return ItemActionResult.FAIL;
             }
@@ -190,36 +170,40 @@ public class InfusionTableBlock extends BlockWithEntity {
 
             if (quantity + quantityToAdd <= 9) {
                 infusionTableBlockEntity.setIchorQuantity(quantity + quantityToAdd);
-                if (!player.isCreative()) {
-                    ItemStack handStack = player.getStackInHand(hand);
-                    if (handStack.isOf(bucket_of_ichor)) {
-                        handStack.decrement(1);
-
-                        // If the consumed bucket was the only item (usual case, max stack is 1):
-                        if (handStack.isEmpty()) {
-                            player.setStackInHand(hand, new ItemStack(Items.BUCKET, 1));
-                        } else {
-                            player.getInventory().insertStack(new ItemStack(Items.BUCKET, 1));
-                        }
-                    } else {
-                        handStack.decrement(1);
-                    }
-                    world.playSound(
-                            null,
-                            pos,
-                            SoundEvents.BLOCK_END_PORTAL_FRAME_FILL,
-                            SoundCategory.BLOCKS,
-                            1.0F,
-                            (float) (quantity + quantityToAdd) / 2.0F
-                    );
-                }
-                return ItemActionResult.SUCCESS;
+                return getItemActionResult(world, pos, player, hand, quantity, quantityToAdd, Ichor.bucket_of_ichor);
             } else {
                 return ItemActionResult.FAIL;
             }
 
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+    }
+
+    @NotNull
+    private ItemActionResult getItemActionResult(World world, BlockPos pos, PlayerEntity player, Hand hand, int quantity, int quantityToAdd, Item bucketOfCrystallizedBlood) {
+        if (!player.isCreative()) {
+            ItemStack handStack = player.getStackInHand(hand);
+            if (handStack.isOf(bucketOfCrystallizedBlood)) {
+                handStack.decrement(1);
+                // If the consumed bucket was the only item (usual case, max stack is 1):
+                if (handStack.isEmpty()) {
+                    player.setStackInHand(hand, new ItemStack(Items.BUCKET, 1));
+                } else {
+                    player.getInventory().insertStack(new ItemStack(Items.BUCKET, 1));
+                }
+            } else {
+                handStack.decrement(1);
+            }
+            world.playSound(
+                    null,
+                    pos,
+                    SoundEvents.BLOCK_END_PORTAL_FRAME_FILL,
+                    SoundCategory.BLOCKS,
+                    1.0F,
+                    (float) (quantity + quantityToAdd) / 2.0F
+            );
+        }
+        return ItemActionResult.SUCCESS;
     }
 
     // Creates the block entity for this table's world position. Its BlockState (including FACING) is
