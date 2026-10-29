@@ -8,10 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ToolItem;
-import net.minecraft.item.ToolMaterials;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
@@ -24,6 +21,9 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import net.Polished.polished_medieval.Tools.Materials.BloodstoneMaterial;
+
+import static net.Polished.polished_medieval.Items.Bloodstone.Bloodstone.bucket_of_crystallized_blood;
+import static net.Polished.polished_medieval.Items.Ichor.Ichor.bucket_of_ichor;
 import static net.Polished.polished_medieval.Tools.ToolGroups.BloodstoneTools.*;
 import static net.Polished.polished_medieval.Tools.ToolGroups.IchorTools.*;
 import static net.minecraft.item.Items.BUCKET;
@@ -177,12 +177,22 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        // Make sure that it is a bucket in either slot 1 or 2. No check for slot 0.
-        if (!stack.isOf(BUCKET) && (slot == 1 || slot == 2)) {
+        if (!(stack.isOf(BUCKET) || stack.isOf(bucket_of_crystallized_blood) || stack.isOf(bucket_of_ichor)) && (slot == 1 || slot == 2)) {
             return;
         }
 
-        items.set(slot, stack);
+        if (slot == 1 && stack.isOf(BUCKET) && getBloodstoneQuantity() == 9) {
+            items.set(slot, new ItemStack(bucket_of_crystallized_blood, 1));
+            setBloodstoneQuantity(0);
+        }
+        else if (slot == 2 && stack.isOf(BUCKET) && getIchorQuantity() == 9) {
+            items.set(slot, new ItemStack(bucket_of_ichor, 1));
+            setIchorQuantity(0);
+        }
+        else {
+            items.set(slot, stack);
+        }
+
         markDirty();
     }
 
@@ -207,12 +217,24 @@ public class InfusionTableBlockEntity extends BlockEntity implements ExtendedScr
     }
 
     public void setBloodstoneQuantity(int bloodstoneQuantity) {
-        this.bloodstoneQuantity = bloodstoneQuantity;
+        if (bloodstoneQuantity == 9 && getStack(1).isOf(BUCKET)) {
+            items.set(1, new ItemStack(bucket_of_crystallized_blood, 1));
+            this.bloodstoneQuantity = 0;
+        } else {
+            this.bloodstoneQuantity = bloodstoneQuantity;
+        }
+
         markDirty();
     }
 
     public void setIchorQuantity(int ichorQuantity) {
-        this.ichorQuantity = ichorQuantity;
+        if (ichorQuantity == 9 && getStack(2).isOf(BUCKET)) {
+            items.set(2, new ItemStack(bucket_of_ichor, 1));
+            this.ichorQuantity = 0;
+        } else {
+            this.ichorQuantity = ichorQuantity;
+        }
+
         markDirty();
     }
 
