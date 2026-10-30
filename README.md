@@ -45,7 +45,7 @@ The Infusion Table is a custom two-block-wide workstation with a dedicated GUI.
    - One Drop of Ichor adds one Ichor charge.
    - One Vial of Ichor adds three Ichor charges.
    - A full bucket adds nine charges.
-4. Insert a vanilla Brush into the table to complete the conversion once the required nine charges are present.
+4. Interact with a Brush on the table to complete the conversion once the required nine charges are present.
 5. Netherite equipment converts to Bloodstone equipment with nine Bloodstone charges. Bloodstone equipment then converts to its Ichor equivalent with nine Ichor charges.
 
 The table can also fill buckets when nine charges are available. Empty buckets are placed in the table's resource slots and become a Bucket of Crystallized Blood or Bucket of Ichor. Breaking the table drops its stored items and resource charges.
@@ -74,42 +74,6 @@ The complete recipe definitions are in `src/main/resources/data/polished_medieva
 - Java **21**
 
 Fabric Loader and Fabric API are required on both the client and server. Install the same mod version on both sides when playing multiplayer.
-
-## Installation
-
-1. Install Minecraft 1.21.1 with Fabric Loader.
-2. Install the matching Fabric API release.
-3. Download the Polished Medieval JAR from the project's releases.
-4. Put the JAR in the `mods` folder.
-5. Start the Fabric profile.
-
-## Building from source
-
-This repository uses Fabric Loom and Gradle. A Gradle installation and Java 21 are required. From the repository root, run:
-
-```powershell
-gradle build
-```
-
-The remapped mod JAR is generated in `build/libs`. To launch a development client from the project, use:
-
-```powershell
-gradle runClient
-```
-
-The project also includes Fabric data-generation wiring through the `fabric-datagen` entrypoint.
-
-## Project layout
-
-```text
-src/
-  main/
-    java/       Common registries, items, blocks, tools, projectiles, and gameplay logic
-    resources/  Fabric metadata, mixins, language data, tags, GUI assets, and recipes
-  client/
-    java/       Infusion Table screen and dagger/entity rendering registration
-    resources/  Client-only mixin configuration
-```
 
 Important implementation areas include:
 
