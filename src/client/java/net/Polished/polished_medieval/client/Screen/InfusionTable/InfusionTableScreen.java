@@ -17,7 +17,7 @@ public class InfusionTableScreen extends HandledScreen<InfusionTableScreenHandle
     // Identify the GUI texture for the infusion table, gui texture contains all assets for the gui
     // This variable gets called by the drawBackground method
     public static final Identifier GUI_TEXTURE =
-            Identifier.of(MOD_ID, "textures/gui/infusionTable/infusiontable_gui.png");
+            Identifier.of(MOD_ID, "textures/gui/infusiontable/infusiontable_gui.png");
 
     // The screen factory invokes this constructor when the infusion table is opened, supplying its handler,
     // the player's inventory, and the screen title. Pass them to HandledScreen to initialize the UI.
