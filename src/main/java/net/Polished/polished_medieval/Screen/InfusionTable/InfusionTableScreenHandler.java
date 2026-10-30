@@ -1,11 +1,13 @@
 package net.Polished.polished_medieval.Screen.InfusionTable;
 
+import net.Polished.polished_medieval.Blocks.InfusionTable.InfusionTableBlockEntity;
 import net.Polished.polished_medieval.Screen.ModScreenHandlers;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +16,7 @@ import static net.minecraft.item.Items.BUCKET;
 
 public class InfusionTableScreenHandler extends ScreenHandler {
     private final Inventory inventory;
+    private final PropertyDelegate propertyDelegate;
 
     public InfusionTableScreenHandler(int syncId, PlayerInventory playerInventory, BlockPos pos) {
         this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(pos));
@@ -22,9 +25,34 @@ public class InfusionTableScreenHandler extends ScreenHandler {
     public InfusionTableScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity) {
         super(ModScreenHandlers.INFUSION_TABLE_SCREEN_HANDLER, syncId);
         this.inventory = (Inventory) blockEntity;
+        InfusionTableBlockEntity infusionTable = (InfusionTableBlockEntity) blockEntity;
+        this.propertyDelegate = new PropertyDelegate() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> infusionTable.getBloodstoneQuantity();
+                    case 1 -> infusionTable.getIchorQuantity();
+                    default -> 0;
+                };
+            }
 
-        this.addSlot(new Slot(inventory, 0, 80, 35));
-        this.addSlot(new Slot(inventory, 1, 56, 11) {
+            @Override
+            public void set(int index, int value) {
+                switch (index) {
+                    case 0 -> infusionTable.setBloodstoneQuantity(value);
+                    case 1 -> infusionTable.setIchorQuantity(value);
+                }
+            }
+
+            @Override
+            public int size() {
+                return 2;
+            }
+        };
+        this.addProperties(propertyDelegate);
+
+        this.addSlot(new Slot(inventory, 0, 80, 40));
+        this.addSlot(new Slot(inventory, 1, 56, 16) {
             @Override
             public boolean canInsert(ItemStack stack) {
                 return stack.isOf(BUCKET);
@@ -35,7 +63,7 @@ public class InfusionTableScreenHandler extends ScreenHandler {
                 return 1;
             }
         });
-        this.addSlot(new Slot(inventory, 2, 104, 59){
+        this.addSlot(new Slot(inventory, 2, 104, 64){
             @Override
             public boolean canInsert(ItemStack stack) {
                 return stack.isOf(BUCKET);
@@ -49,6 +77,14 @@ public class InfusionTableScreenHandler extends ScreenHandler {
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
+    }
+
+    public int getBloodstoneQuantity() {
+        return propertyDelegate.get(0);
+    }
+
+    public int getIchorQuantity() {
+        return propertyDelegate.get(1);
     }
 
     @Override
@@ -87,14 +123,14 @@ public class InfusionTableScreenHandler extends ScreenHandler {
     private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 95 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 153));
         }
     }
 }
